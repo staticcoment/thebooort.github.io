@@ -15,5 +15,6 @@ description: Markdown summary with different options
 ---
 ## Post de ejemsplo
 sdfdsf $\frac{11}{2}$ adcjkndslcjkdsnjsdnfs 
-$$ E = m\cdot c^2 \label{eq:mc2}$$ adsasd \ref{eq:mc2}
+$$ E = m\cdot c^2 \label{hola} $$ adsasd 
+asdsadsad asd asda sd \ref{hola} asd a
 $ J(x) = \int{L(t, x, \dot{x}) dt} \$
