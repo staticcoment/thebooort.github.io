@@ -1,9 +1,9 @@
 # main text of home
-name: Bart Ortiz
-bio: I lose my time thinking about things
+name: John Doe
+bio: A Man who travels the world eating noodles
 
 # twitter summary info
-description: personal blog 
+description: A blog about technology and stuff related
 
 # if it's an external image, update below for true
 # better with square images
@@ -16,7 +16,7 @@ resume: true
 resume-external: true
 resume-url: https://google.com/?q=my+resume
 
-url: http://thebooort.github.io
+url: https://koppl.in/indigo
 # your url: http://USERNAME.github.io
 
 permalink: /:title/
@@ -35,22 +35,22 @@ disqus:
 
 # if you don't have any of social below, comment the line
 facebook: myfacebook
-twitter: http://www.twitter.com/bortizmath
+twitter: mytwitter
 # google: mygoogle
 # instagram: myinstagram
 # pinterest: mypinterest
- linkedin: https://www.linkedin.com/in/bartolom%C3%A9-ortiz-viso/
+# linkedin: mylinkedin
 # youtube: myyoutube
 # spotify: myspotify
-github: http://www.twitter.com/thebooort
+github: mygithub
 # lastfm: mylastfm
 # stackoverflow: 7044681/mystackoverflow
 # quora: userquora
 # reddit: username
-# medium: medium
+medium: medium
 # vimeo: myvimeo
 # lanyrd: mylanyrd
-email: bortios2000@gmail.com
+email: myemail@gmail.com
 
 authors:
     johndoe:
