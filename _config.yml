@@ -8,7 +8,7 @@ description: Personal blog
 # if it's an external image, update below for true
 # better with square images
 external-image: false
-picture: assets/images/profile.jpg
+picture: assets/images/photo_2017-12-03_18-48-43.jpg
 
 # If you want to include your resume, set to true
 # and specify source (external or local).
@@ -42,7 +42,7 @@ twitter: bortizmath
 linkedin: bartolom%C3%A9-ortiz-viso
 # youtube: myyoutube
 # spotify: myspotify
-github: mygithub
+github: thebooort
 # lastfm: mylastfm
 # stackoverflow: 7044681/mystackoverflow
 # quora: userquora
