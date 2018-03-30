@@ -59,12 +59,12 @@ authors:
         external-image: false
         picture: assets/images/profile.jpg
         twitter: johndoe
-    jamesfoster:
-        name: James Foster
-        bio: A Man who develops software with coffee
+    bart:
+        name: Bart Ortiz
+        bio: I lose my time thinking about maths, skepticism and science
         external-image: false
         picture: assets/images/james.jpg
-        twitter: jamesfoster
+        twitter: bortizmath
 
 # do you want a larger site? change the option below
 # options: [normal, large] | default: normal
