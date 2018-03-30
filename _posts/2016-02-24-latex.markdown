@@ -14,4 +14,6 @@ author: bart
 description: Markdown summary with different options
 ---
 Post de ejemplo
-$$\frac{1}{2}$$
+$$
+  \frac{1}{2}
+ $$
