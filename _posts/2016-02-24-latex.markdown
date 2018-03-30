@@ -14,4 +14,4 @@ author: bart
 description: Markdown summary with different options
 ---
 ## Post de ejemplo
-asdihlasdkasjdlkajdlasd
+$$\frac{11}{2}$$
