@@ -6,7 +6,7 @@ tag:
 - bioinformatics
 - BioinformaticsGRX
 - OpenSource
-image: https://github.com/thebooort/thebooort.github.io/blob/master/assets/images/Captura%20de%20pantalla%20de%202018-04-02%2012-23-06.png
+image: https://raw.githubusercontent.com/thebooort/thebooort.github.io/blob/master/assets/images/Captura%20de%20pantalla%20de%202018-04-02%2012-23-06.png
 headerImage: true
 projects: true
 hidden: true # don't count this post in blog pagination
@@ -19,7 +19,7 @@ externalLink: false
 
 # BioinformaticsGRX 
 
-![logo](https://github.com/thebooort/thebooort.github.io/blob/master/assets/images/Captura%20de%20pantalla%20de%202018-04-02%2012-23-06.png)
+![logo](https://raw.githubusercontent.com/thebooort/thebooort.github.io/blob/master/assets/images/Captura%20de%20pantalla%20de%202018-04-02%2012-23-06.png)
 
 ##### English Version below!
  
