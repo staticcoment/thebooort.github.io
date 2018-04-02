@@ -17,11 +17,11 @@ externalLink: false
 ---
 
 
-#BioinformaticsGRX 
+# BioinformaticsGRX 
 
 ![logo](https://github.com/thebooort/thebooort.github.io/blob/master/assets/images/Captura%20de%20pantalla%20de%202018-04-02%2012-23-06.png)
 
-#####English Version below!
+##### English Version below!
  
 BioinformaticsGRX es un grupo de bioinformática de Granada. Hacemos cursos, damos charlas avanzadas y para principiantes e intentamos crear sinergias en nuestra ciudad entre estudiantes, profesores, investigadores y empresas (tenemos planes para hacer algunos proyectos de software pronto tambien).
 Actualmente estamos en twitter, slack y telegram (nuestro github está en construcción y estará listo en nada). Si tienes curiosidad acerca de la bioinformática o si eres un investigador que desea conocer a otras personas en su campo, BioinformaticsGRX es el grupo adecuado para ti. ¡ÚNETE A NOSOTROS!
