@@ -18,11 +18,11 @@ externalLink: false
 ---
 
 
-#Realidad Diferenicial: Telegram Science Channel
+# Realidad Diferenicial: Telegram Science Channel
 
 ![captura](https://raw.githubusercontent.com/thebooort/thebooort.github.io/master/assets/images/telegram1.png)
 
-#####English Version below!
+
  
 Leo. Leo mucho. Y sobre todo leo muchas cosas sobre matemáticas, escepticismo y ciencia. Vaya, no os debería descubrir nada nuevo si veis el blog :smile: 
 
