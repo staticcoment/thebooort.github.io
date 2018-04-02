@@ -13,13 +13,13 @@ hidden: true # don't count this post in blog pagination
 description: "Bioinformatics dev Group in Granada"
 category: project
 author: bart
-externalLink: true
+externalLink: false
 ---
 
 
 # BioinformaticsGRX 
 
-![logo](assets/images/Captura%20de%20pantalla%20de%202018-04-02%2012-23-06.png)
+![logo](https://github.com/thebooort/thebooort.github.io/blob/master/assets/images/Captura%20de%20pantalla%20de%202018-04-02%2012-23-06.png)
 
 ##### English Version below!
  
