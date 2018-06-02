@@ -42,7 +42,9 @@ We are in twitter, slack and telegram (our github is under construction). If you
 Find us here!:
 
 ![Webpage](bioinformaticsgrx.com)
+
 ![Meetup](https://www.meetup.com/Granada-Geek/?chapter_analytics_code=UA-60118289-2)
+
 ![Twitter](www.twitter.com/bioinfGRX)
 
 
