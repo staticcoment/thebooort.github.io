@@ -8,7 +8,7 @@ description: Personal blog
 # if it's an external image, update below for true
 # better with square images
 external-image: false
-picture: assets/images/photo_2017-12-03_18-48-43.jpg
+picture: assets/images/bart_2.jpg
 
 # If you want to include your resume, set to true
 # and specify source (external or local).
@@ -57,7 +57,7 @@ authors:
         name: Bart Ortiz
         bio: I lose my time thinking about maths, skepticism and science
         external-image: false
-        picture: assets/images/rd2.jpg
+        picture: assets/images/bart_2.jpg
         twitter: bortizmath
 
 # do you want a larger site? change the option below
