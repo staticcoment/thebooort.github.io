@@ -36,9 +36,9 @@ Este grupo se basa en los ideales de la EFF sobre la importancia de que estos te
 
 Si necesitas más información o quieres comentarnos cualquier cuestión, puedes escribirnos por correo electrónico a info@interferencias.tech o interferencias@protonmail.com.
 
-También puedes unirte a nuestro grupo de Telegram, que es el medio de comunicación más directo que usamos: ![inter_ferencias](https://t.me/inter_ferencias).
+También puedes unirte a nuestro grupo de Telegram, que es el medio de comunicación más directo que usamos: [inter_ferencias](https://t.me/inter_ferencias).
 
-Y no te olvides de visitar nuestra web! : ![interferencias.tech](http://interferencias.tech)
+Y no te olvides de visitar nuestra web! : [interferencias.tech](http://interferencias.tech)
 
 ***
 
@@ -55,6 +55,6 @@ This group is based on the ideals of the EFF on the importance of these issues b
 
 If you need more information or want to tell us any question, you can write us by email to info@interferencias.tech or interferencias@protonmail.com.
 
-You can also join our Telegram group, which is the most direct means of communication we use: ![inter_ferencias](https://t.me/inter_ferencias).
+You can also join our Telegram group, which is the most direct means of communication we use: [inter_ferencias](https://t.me/inter_ferencias).
 
-And don't forget visit our website:  ![interferencias.tech](http://interferencias.tech)
+And don't forget visit our website:  [interferencias.tech](http://interferencias.tech)
