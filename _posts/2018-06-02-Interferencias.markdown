@@ -17,10 +17,10 @@ hidden: true # don't count this post in blog pagination
 description: "Bioinformatics dev Group in Granada"
 category: project
 author: bart
-externalLink: true
+externalLink: false
 ---
 # Interferencias
-![logo](ttps://raw.githubusercontent.com/thebooort/thebooort.github.io/master/assets/images/banner_interferencias.png)
+![logo](https://raw.githubusercontent.com/thebooort/thebooort.github.io/master/assets/images/banner_interferencias.png)
 
 ##### English Version below!
 Interferencias es un grupo ciberactivista sin ánimo de lucro que pretende reunir a una serie de personas interesadas en:

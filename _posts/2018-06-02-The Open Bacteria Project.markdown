@@ -15,7 +15,7 @@ hidden: true # don't count this post in blog pagination
 description: "Bioinformatics dev Group in Granada"
 category: project
 author: bart
-externalLink: true
+externalLink: false
 ---
 
 

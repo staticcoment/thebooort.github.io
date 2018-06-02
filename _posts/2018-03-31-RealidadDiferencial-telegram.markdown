@@ -1,5 +1,5 @@
 ---
-title: "Realidad Diferencial Telegram channel "
+title: "[Creator]Realidad Diferencial Telegram channel "
 layout: post
 date: 2018-03-31 22:10
 tag: 
