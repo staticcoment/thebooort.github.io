@@ -7,7 +7,7 @@ tag:
 - University
 - Education
 - Science Divulgation
-image: https://raw.githubusercontent.com/thebooort/thebooort.github.io/master/assets/images/logo_amat.png
+image: https://raw.githubusercontent.com/thebooort/thebooort.github.io/master/assets/images/logo_amat.jpg
 headerImage: true
 projects: true
 hidden: true # don't count this post in blog pagination
@@ -17,7 +17,7 @@ author: bart
 externalLink: false
 ---
 # Interferencias
-![logo](https://raw.githubusercontent.com/thebooort/thebooort.github.io/master/assets/images/banner_amat.png)
+![logo](https://raw.githubusercontent.com/thebooort/thebooort.github.io/master/assets/images/banner_amat.jpeg)
 
 ##### English Version below!
 Durante la carrera de matemáticas fui miembro durante tres años de la Asociación de Estudiantes de Matemáticas de la Universidad de Granada, uno como vicepresidente y dos como Presidente. 
