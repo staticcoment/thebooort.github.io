@@ -13,7 +13,7 @@ hidden: true # don't count this post in blog pagination
 description: "Bioinformatics dev Group in Granada"
 category: project
 author: bart
-externalLink: false
+externalLink: true
 ---
 
 
@@ -28,9 +28,11 @@ Actualmente estamos en twitter, slack y telegram (nuestro github está en constr
 
 Para muchas de las actividades que organizamos usamos Meetup para reservar asientos (normalemente nuestro aforo es limitado). Nos podéis encontrar en:
 
-![Página web](bioinformaticsgrx.com)
+![Página web](http://bioinformaticsgrx.com)
+
 ![Meetup](https://www.meetup.com/Granada-Geek/?chapter_analytics_code=UA-60118289-2)
-![Twitter](www.twitter.com/bioinfGRX)
+
+![Twitter](http://www.twitter.com/bioinfGRX)
 
 ***
 BioinformaticsGRX it's a bioinformatics group of Granada. We make courses, give advanced and beginner talks and try to create sinergies in our city between students, professors, researchers and enterprises  (we have some plans to make some software projects soon too) .
