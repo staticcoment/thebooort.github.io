@@ -16,7 +16,7 @@ category: project
 author: bart
 externalLink: false
 ---
-# Interferencias
+# Asociacion de Estudiantes de Matematicas de la Universidad de Granada
 ![logo](https://raw.githubusercontent.com/thebooort/thebooort.github.io/master/assets/images/banner_amat.jpeg)
 
 ##### English Version below!
