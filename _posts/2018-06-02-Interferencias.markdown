@@ -10,7 +10,7 @@ tag:
 - Massive surveillance
 - Computer security
 - Hackitivism
-image: https://raw.githubusercontent.com/thebooort/thebooort.github.io/master/assets/images/interferencias_logo.png
+image: https://raw.githubusercontent.com/thebooort/thebooort.github.io/master/assets/images/interferencias_logo.jpg
 headerImage: true
 projects: true
 hidden: true # don't count this post in blog pagination
