@@ -1,7 +1,7 @@
 
 # Personal Blog 
 
-## You can find the Theme:
+#### You can find the Theme here:
 2. Fork the project [Indigo](https://github.com/sergiokopplin/indigo/fork)
 
 ---
