@@ -1,5 +1,5 @@
 ---
-title: "BioinformaticsGRX "
+title: "[Founder]BioinformaticsGRX "
 layout: post
 date: 2018-04-02 22:10
 tag: 
