@@ -52,6 +52,6 @@ Does it sound exiciting to you? Well, great news: You can follow our science adv
 
 [Twitter](www.twitter.com/theopenbacteria)
 
-[Youtube](https://www.youtube.com/channel/UCOSsUPPxOC6FuWf6oz0YgLg
+[Youtube](https://www.youtube.com/channel/UCOSsUPPxOC6FuWf6oz0YgLg)
 
 
