@@ -1,7 +1,7 @@
 ---
 title: "Manifiesto de la red DIMA"
 layout: post
-date: 2016-06-04 13:44
+date: 2018-06-04 13:44
 image: /assets/images/dima.jpg
 headerImage: true
 tag:
