@@ -1,0 +1,25 @@
+---
+title: "La importancia de estudiar tsumegos"
+layout: post
+date: 2018-10-30 19:57
+image: /assets/images/go.jpg
+headerImage: true
+tag:
+- go
+- tsumego
+- baduk
+use_math: true
+star: true
+category: blog
+author: bart
+description: La importancia de estudiar tsumegos
+---
+# La importancia de estudiar tsumegos
+Os dejo esta partida que jugué el otro día en bus, sin presiones.
+
+Llegando al final sin muchas esperanzas, se puso en manifiesto lo bueno que es estudiar problemas de vida y muerte (tsumegos). Ver el punto clave me permitió darle la vuelta al marcador en el ultimo suspiro, ganando la partida. 
+
+Os dejo con la partida:
+
+<script type="text/javascript" src="/assets/go/js/all.compressed.js"></script>
+<div class="eidogo-player-auto" sgf="/assets/kifus/ejemplo.sgf"></div>

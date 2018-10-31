@@ -1,0 +1,38 @@
+(;
+AB[hb][nb][ob][ic][pc][pd][pe][kd][qd][rd][ie][je][kf][kg][of][og][ig][jg][qg][rg][dh][bi][ei][fi][gi][ji][aj][cj][dj][gj][hj][sj][bk][hk][ol][cm][cn][em][en][eo][hm][im][fn][gn][bo][ap][cp][dp][jp][lp][bq][eq][nq][nr]
+AW[qa][gb][gc][pb][rb][rc][cc][lc][oc][qc][ge][gf][he][hf][cf][df][if][jf][hg][pg][gh][ih][nh][oh][qh][hi][ej][ek][el][qj][ck][dk][gk][gl][gm][bl][bm][bn][dl][dm][dn][do][ml][nl][hn][pn][co][fo][go][mo][pp][pq][or]
+PL[W]
+C[White's response to the marked monkey jump on the right side?
+
+Source:
+Go World #23, p. 54
+Polish Championship game
+Sakai Masanori 4P]
+TR[sj]
+(;
+W[rj]
+C[In the game, White makes a big mistake with this attachment.]
+(;
+B[si]
+C[Also in the game, Black returns the favor by pulling back here.];
+W[sk]
+C[Now White can seal off the right side in gote.];
+B[rh];W[ri];B[sh];W[rl]
+C[The shape is settled, but both sides misplayed this sequence!]
+)
+    (;
+    B[sk]
+    C[Black should extend down instead, after which White has no good way to stop Black.
+
+Black has a clear lead.]
+    )
+)
+    (;
+    W[ri]
+    C[Instead of the game move, White should play this other standard answer to the monkey jump.];
+    B[si];W[sh]
+    C[After this hane, White has the following squeeze to close off the right side.];
+    B[rh];W[sk];B[sg];W[rj];B[sh];W[rl]
+    )
+)
+

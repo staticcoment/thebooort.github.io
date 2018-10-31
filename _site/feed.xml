@@ -1,0 +1,421 @@
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.7.4">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2018-10-31T18:53:18+01:00</updated><id>http://localhost:4000/</id><title type="html">Bart Ortiz</title><subtitle>Personal blog</subtitle><entry><title type="html">Como usar Org-mode para desahogar tu RAM</title><link href="http://localhost:4000/org-mode-bookmarks/" rel="alternate" type="text/html" title="Como usar Org-mode para desahogar tu RAM" /><published>2018-10-30T19:57:00+01:00</published><updated>2018-10-30T19:57:00+01:00</updated><id>http://localhost:4000/org-mode-bookmarks</id><content type="html" xml:base="http://localhost:4000/org-mode-bookmarks/">&lt;h1 id=&quot;cómo-usar-org-mode-para-capturar-y-almacenar-bookmarks&quot;&gt;Cómo usar org-mode para capturar y almacenar bookmarks&lt;/h1&gt;
+&lt;h2 id=&quot;aventuras-en-emacsland-1-es-un-titulo-horrible-que-posible-cambie-tranqui&quot;&gt;Aventuras en emacsland #1 (es un titulo horrible que posible cambie, tranqui)&lt;/h2&gt;
+&lt;p&gt;&lt;img src=&quot;/assets/images/exampleorgmodebook.gif&quot; alt=&quot;example&quot; /&gt;
+Dentro del vasto mundo de emacs y org-mode tenemos multitud de herramientas a nuestra disposición.&lt;/p&gt;
+
+&lt;p&gt;Cuando volví a lanzarme a esta piscina, una de las cosas que tenía en mente era replicar de alguna manera las aplicaciones &lt;strong&gt;Read-it-later&lt;/strong&gt; como &lt;a href=&quot;http://getpocket.com&quot;&gt;pocket&lt;/a&gt;. Básicamente estas aplicaciones te permiten almacenar enlaces apra leerlos luego, y, no sé vosotros, pero mi RAM necesita un respiro de tener taantas pestañas abiertas.&lt;/p&gt;
+
+&lt;p&gt;Es cierto que por ahora hay algún incovenniente por la sincronización con el smartphone, aunque no es algo que me quite mucho el sueño, pues suelo leer más desde el ordenador. Otras opciones, como implementar tags, o estados que complemente el desarrollo inicial aquí expuesto creo que aportan más interés al proyecto ( al menos para mí).&lt;/p&gt;
+
+&lt;p&gt;Quitando eso, usando las numerosas herramientas que una comunidad como la de emacs/org-mode ha desarrollado, replicar la principal finalidad de estas apps es no solo alcanzable, si no alcanzable fácilmente. Vamos al lío.&lt;/p&gt;
+
+&lt;h2 id=&quot;ingredientes&quot;&gt;Ingredientes&lt;/h2&gt;
+&lt;p&gt;Hacen falta ( y viene bien tener cierta idea, aunque no es imprescindible):&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;Emacs.&lt;/li&gt;
+  &lt;li&gt;Org-mode.&lt;/li&gt;
+  &lt;li&gt;Org-capture.&lt;/li&gt;
+  &lt;li&gt;Org-protocol.&lt;/li&gt;
+  &lt;li&gt;Firefox org-capture-extension.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;setting-up&quot;&gt;Setting up&lt;/h2&gt;
+&lt;p&gt;Para usar org mode con esta finalidad primer debemos tener instalado org-protocol: &lt;a href=&quot;https://orgmode.org/worg/org-contrib/org-protocol.html&quot;&gt;org-protocol webpage&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;Básicamente, org-protocol intercepta llamadas de emacsclient para desencadenar acciones personalizadas sin dependencias externas. Suponiendo que lo tengamos ya instalado (en la web enlazada vienen toda la información necesaria) comenzamos el set up:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;Primero necesitamos el paquete, para ello añadimos a nuestro fichero de configuración de emacs: &lt;code class=&quot;highlighter-rouge&quot;&gt;(require 'org-protocol)&lt;/code&gt;&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Despues añadimos el modelo que vamos a utilizar para almacenar la información. En este caso he seguido los modelos estandar que se muestran en la configuración usual, uno para recoger url’s (que es el que planeo usar) y otro para recoger citas de texto (no planeo que vaya a usarlo mucho, pero bueno, ya que tenemos esa oportunidad lo dejamos implementado):&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;language-common_lisp highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;defun&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;transform-square-brackets-to-round-ones&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;string-to-transform&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+  &lt;span class=&quot;s&quot;&gt;&quot;Transforms [ into ( and ] into ), other chars left unchanged.&quot;&lt;/span&gt;
+  &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;concat&lt;/span&gt; 
+  &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;mapcar&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;#'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;lambda&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;c&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;equal&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;c&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;?[&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;?\(&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;equal&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;c&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;?]&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;?\)&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;c&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)))&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;string-to-transform&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt;
+  &lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+
+&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;setq&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;org-capture-templates&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;`&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;
+	&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;p&quot;&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;Protocol&quot;&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;entry&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;file+headline&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;concat&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;org-directory&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;notes.org&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;Inbox&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+        &lt;span class=&quot;s&quot;&gt;&quot;* %^{Title}\nSource: %u, %c\n #+BEGIN_QUOTE\n%i\n#+END_QUOTE\n\n\n%?&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;	
+	&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;L&quot;&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;Protocol Link&quot;&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;entry&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;file+headline&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;concat&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;org-directory&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;notes.org&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;Inbox&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+        &lt;span class=&quot;s&quot;&gt;&quot;* %? [[%:link][%(transform-square-brackets-to-round-ones \&quot;%:description\&quot;)]]\n&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Como podéis observar, hemos de definir una función, esto se debe a un bug al obtener links que impedía obtener correctamente aquellos con brackets (como los de ArXiv). Al ser una página que visito mucho, para mí era un si o sí. La solución la dió Vincent Picaud en este issue: [https://github.com/sprig/org-capture-extension/issues/37].&lt;/p&gt;
+
+&lt;p&gt;Finalmente, para acabar de escribir cosas en la configuración podemos añadir un &lt;code class=&quot;highlighter-rouge&quot;&gt;(server-start)&lt;/code&gt; en nuestro &lt;strong&gt;init.el&lt;/strong&gt; o, si lo preferimos, con emacs abierto iniciar el server via : &lt;code class=&quot;highlighter-rouge&quot;&gt;M-x server-start&lt;/code&gt; (esto lo tendríamos que hacer cada vez que iniciamos emacs).&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;Si todo ha ido bien, abre una terminal y escribe&lt;/strong&gt;&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;
+emacsclient &lt;span class=&quot;nt&quot;&gt;-n&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;org-protocol:///capture?url=http%3a%2f%2fduckduckgo%2ecom&amp;amp;title=DuckDuckGo&quot;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;&lt;strong&gt;esto debería funcionar. En caso contrario, intenta solucionar ese problema antes&lt;/strong&gt;.&lt;/p&gt;
+
+&lt;p&gt;Después, hacemos el setup que nos permite usar org protocol y comunicarnos con firefox (si usas KDE creo que esto no sirve, pero seguro que hay más información en internet):&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;Installa las librerias de gnome:&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;  &lt;span class=&quot;nb&quot;&gt;sudo &lt;/span&gt;apt install gconf2
+  
+  gconftool-2 &lt;span class=&quot;nt&quot;&gt;-s&lt;/span&gt; /desktop/gnome/url-handlers/org-protocol/command &lt;span class=&quot;s1&quot;&gt;'/usr/local/bin/emacsclient %s'&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;--type&lt;/span&gt; String
+
+  gconftool-2 &lt;span class=&quot;nt&quot;&gt;-s&lt;/span&gt; /desktop/gnome/url-handlers/org-protocol/enabled &lt;span class=&quot;nt&quot;&gt;--type&lt;/span&gt; Boolean &lt;span class=&quot;nb&quot;&gt;true&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Después registra emacsclient como el handler de org-protocol:&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;  &lt;span class=&quot;nb&quot;&gt;cat&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;${&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;HOME&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;/.local/share/applications/org-protocol.desktop&quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;EOF&lt;/span&gt;&lt;span class=&quot;sh&quot;&gt;
+  [Desktop Entry]
+  Name=org-protocol
+  Exec=emacsclient %u
+  Type=Application
+  Terminal=false
+  Categories=System;
+  MimeType=x-scheme-handler/org-protocol;
+&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;  EOF
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h4 id=&quot;cuidao-si-tienes-fish-instalado-no-puedes-copiar-y-pegar-lo-de-arriba-mejor-échale-un-vistazo-a-httpsgithubcomfish-shellfish-shellissues540-o-escríbelo-manualmente&quot;&gt;Cuidao: Si tienes fish instalado no puedes copiar y pegar lo de arriba, mejor échale un vistazo a: &lt;a href=&quot;&quot;&gt;https://github.com/fish-shell/fish-shell/issues/540&lt;/a&gt; o escríbelo manualmente.&lt;/h4&gt;
+
+&lt;p&gt;Finalmente, solo queda installar la extensión para Firefox:&lt;a href=&quot;https://github.com/sprig/org-capture-extension/blob/master/README.md&quot;&gt;Github&lt;/a&gt; o &lt;a href=&quot;https://addons.mozilla.org/es/firefox/addon/org-capture/&quot;&gt;Link directo a la extensión&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;Si todo ha ido bien, todo debería estar funcionando.&lt;/p&gt;
+
+&lt;h3 id=&quot;ojo-este-último-paso-no-es-imprescindible-tambien-podemos-crear-un-boton-en-firefox-nosotros-mismos-desde-cero-tutorial&quot;&gt;Ojo: Este último paso no es imprescindible, tambien podemos crear un boton en firefox nosotros mismos desde cero (&lt;a href=&quot;http://www.mediaonfire.com/blog/2017_07_21_org_protocol_firefox.html&quot;&gt;Tutorial&lt;/a&gt;)&lt;/h3&gt;
+
+&lt;h2 id=&quot;algunos-problemas&quot;&gt;Algunos problemas&lt;/h2&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;Si has modificado los templates de las formas de capturar cosas, sobre todo la letra, recuerda que también debes cambiarlo en la extension de Firefox.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Otros fallos habituales suelen estar relacionados con la manera en la que emacs usa los servidores (o la extension). Esto puede ser un coñazo, os dejo por aquí links de gente que lo ha sufrido por si os pueden ayudar &lt;a href=&quot;https://stackoverflow.com/questions/47647948/getting-org-protocol-to-work-on-firefox-quantum-no-server-buffers-remain-to&quot;&gt;1&lt;/a&gt;, &lt;a href=&quot;https://github.com/sprig/org-capture-extension/issues/1&quot;&gt;2&lt;/a&gt;. Es posible que os encontréis algunos fallos que no estén corregidos, si es así, echadle un ojo a los issues y animaos a contribuir :).&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Si tienes algun problema con el servidor prueba &lt;code class=&quot;highlighter-rouge&quot;&gt;M-x server-start&lt;/code&gt; que lo reinicia si está abierto. Eso me solucionó un issue con el modo de capturar trozos de texto.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;He observado que copiar dos veces seguidas y llamar al protocolo esas dos veces, hace que se copien dos veces la informacion en la segunda llamada. No sé si es problema mío o de la extension o de mi config. Si alguno tiene el mismo problema, que me lo comente a ver si debemos abrir issue.&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;más-info&quot;&gt;Más info&lt;/h2&gt;
+&lt;p&gt;Lo de arriba es un compendio de todo lo que me ha hecho falta para instalar esta maravilla. He ido cogiendo información de aquí y allí, y os dejo de nuevo los links de los tutoriales en los que me he basado/ me han ayudado para en esta tarea:
+-&lt;a href=&quot;&quot;&gt;http://www.mediaonfire.com/blog/2017_07_21_org_protocol_firefox.html&lt;/a&gt;
+-&lt;a href=&quot;&quot;&gt;https://github.com/sprig/org-capture-extension&lt;/a&gt;
+-&lt;a href=&quot;&quot;&gt;https://orgmode.org/worg/org-contrib/org-protocol.html&lt;/a&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;whats-next&quot;&gt;What’s next?&lt;/h2&gt;
+&lt;p&gt;Como he dicho, seguro que alguien ya ha dado con la idea de sincronizarlo con otros dispositivos (aunque sea usando dropbox). En mi caso llevo un par de días usandolo y no he tenido problemas. Creo que mi siguiente pasó será personalizar todo el procedimiento y añadir tags y estados específicos para bookmarks (quizás algo tipo TOREAD-READ).&lt;/p&gt;
+
+&lt;p&gt;¡Hasta nuestra próxima aventura emacquiana amigues!&lt;/p&gt;</content><author><name>bart</name></author><category term="blog" /><category term="informática" /><category term="bash" /><category term="org-mode" /><category term="emacs" /><summary type="html">Cómo usar org-mode para capturar y almacenar bookmarks Aventuras en emacsland #1 (es un titulo horrible que posible cambie, tranqui) Dentro del vasto mundo de emacs y org-mode tenemos multitud de herramientas a nuestra disposición.</summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="http://localhost:4000/assets/images/orgmodelogo.svg" /></entry><entry><title type="html">Using Eidogo to embed go boards in your jekyll blog</title><link href="http://localhost:4000/go/" rel="alternate" type="text/html" title="Using Eidogo to embed go boards in your jekyll blog" /><published>2018-10-30T19:57:00+01:00</published><updated>2018-10-30T19:57:00+01:00</updated><id>http://localhost:4000/go</id><content type="html" xml:base="http://localhost:4000/go/">&lt;h1 id=&quot;easy-way-to-use-eidogo-in-jekyll-blog&quot;&gt;Easy way to use Eidogo in jekyll blog&lt;/h1&gt;
+&lt;p&gt;As a newcommer in the world of go I was wondering how to show my progress in my blog.&lt;/p&gt;
+
+&lt;p&gt;Nowadays, as a lot of people, I have my blog hosted in github pages. These option is a nice one and has let me learn a little bit about how jekyll and javascript works.&lt;/p&gt;
+
+&lt;p&gt;Them our problem is settled: &lt;strong&gt;How can I share my games in my blog?&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;Well, you could use links or photos, but a cool player that let you insert games and go forward or backward would be incredible. So I keep thinking and what came to my main was one of the most used tool to share games: &lt;a href=&quot;www.eidogo.com&quot;&gt;Eidogo&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;So why don’t we use this amazing resource made by Justin Kramer to display our games?
+What follows is an attempt to do that.&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;**Disclaimer**: I am not an experienced programmer (applied mathematician over here!) and there may be some better options to do this, but just in the spirit to share what I learn (which is the main purpose of this blog) I will show how I did it. This is mean to be easy and fast. Are you thinking about make a plugin about this? Let me know! I’m too!.&lt;/strong&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;setting-up&quot;&gt;Setting up&lt;/h2&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;First create two directories in your assets folder, one for the kifus and other to the script in javascript that contains our visor.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Then, just go to &lt;a href=&quot;http://eidogo.com/source&quot;&gt;Eidogo source&lt;/a&gt;, and download the code. Be sure to check you have the js folder.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Copy this js folder to your Go folder in assets&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Finally add this to whatever post you are writing:&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;language-javascript highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;script&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;type&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;text/javascript&quot;&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;src&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;/assets/go/js/all.compressed.js&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;sr&quot;&gt;/script&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;&amp;gt;
+&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;div&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;class&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;eidogo-player-auto&quot;&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;sgf&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;/assets/kifus/ejemplo.sgf&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;sr&quot;&gt;/div&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;&amp;gt;
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;That’s all! Behind this easy way of insert go games it is the idea of use the code of Eidogo and inserting our script into jekyll.&lt;/p&gt;
+
+&lt;h2 id=&quot;the-result&quot;&gt;The result&lt;/h2&gt;
+&lt;p&gt;As easy as it is, this work incredibly good for me.Remember you could insert comments with your favourite sfg editor.&lt;/p&gt;
+
+&lt;p&gt;Let’s see some examples:&lt;/p&gt;
+
+&lt;h3 id=&quot;a-complete-game&quot;&gt;A complete game&lt;/h3&gt;
+
+&lt;script type=&quot;text/javascript&quot; src=&quot;/assets/go/js/all.compressed.js&quot;&gt;&lt;/script&gt;
+
+&lt;div class=&quot;eidogo-player-auto&quot; sgf=&quot;/assets/kifus/Xie_Yimin-Fujisawa_Rina.sgf&quot;&gt;&lt;/div&gt;
+
+&lt;h3 id=&quot;a-problem&quot;&gt;A problem&lt;/h3&gt;
+
+&lt;script type=&quot;text/javascript&quot; src=&quot;/assets/go/js/all.compressed.js&quot;&gt;&lt;/script&gt;
+
+&lt;div class=&quot;eidogo-player-problem&quot; sgf=&quot;/assets/kifus/problemaAGA.sgf&quot;&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;related-post-and-where-i-find-info&quot;&gt;Related post and where I find info&lt;/h2&gt;
+&lt;p&gt;I mainly use :&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;&quot;&gt;https://stackoverflow.com/questions/47108702/how-to-add-script-tag-in-jekyll&lt;/a&gt; to learn how to insert javascript code.&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;&quot;&gt;http://eidogo.com/source&lt;/a&gt; to know how to call the player&lt;/li&gt;
+&lt;/ul&gt;</content><author><name>bart</name></author><category term="blog" /><category term="go" /><category term="tsumego" /><category term="baduk" /><category term="eidogo" /><category term="jekyll" /><category term="javascript" /><summary type="html">Easy way to use Eidogo in jekyll blog As a newcommer in the world of go I was wondering how to show my progress in my blog.</summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="http://localhost:4000/assets/images/go-problem.png" /></entry><entry><title type="html">Fish-shell (o cómo tener una terminal bonita)</title><link href="http://localhost:4000/fish-shell/" rel="alternate" type="text/html" title="Fish-shell (o cómo tener una terminal bonita)" /><published>2018-10-26T22:44:00+02:00</published><updated>2018-10-26T22:44:00+02:00</updated><id>http://localhost:4000/fish-shell</id><content type="html" xml:base="http://localhost:4000/fish-shell/">&lt;h1 id=&quot;fish-shell&quot;&gt;Fish-shell&lt;/h1&gt;
+
+&lt;p&gt;Hace ya un tiempo que vengo jugando un poco con mi ordenador y aprendiendo a usar herramientas nuevas. 
+El grado en matemáticas te deja un background vasto y cultivado en ramas de la matemática de todo tipo, 
+pero, sin duda, aporta pocas pistas para aquel que quiere profundizar en informatica al ver la inseparable
+relacion que las une (sobre todo si te gusta la matematica aplicada).&lt;/p&gt;
+
+&lt;p&gt;Aprender es descubrir nuevos parajes, visitar sitios desconocidos y asombrarte de hasta donde puedes llegar.
+Y esa sensación, si la compartes, debes llevarla contigo siempre.&lt;/p&gt;
+
+&lt;p&gt;Con esa idea en mente antes de acabar la carrera me puse a juguetear con la terminal, luego con bash y bueno,
+el resto vendrá en sucesivos posts.&lt;/p&gt;
+
+&lt;p&gt;El post de hoy tienen un comienzo muy simple: &lt;strong&gt;LA TERMINAL ES SOSA Y NO DEMASIADO INFORMATIVA&lt;/strong&gt;.
+Por supuesto que los colores son bonitos, pero también nos ayudan a identificar más rapidamente ciertos
+mensajes (es indudable como asociamos el rojo a peligro/advertencia/&lt;strong&gt;algo va muy mal&lt;/strong&gt;). Por tanto desde
+que empecé a usar la terminal (y cualquier otra cosa) me gusta editar y configurar a mi gusto sus opciones,
+y , evidentemente, entre ellas están los colores. (reescribir esta mierda)&lt;/p&gt;
+
+&lt;h2 id=&quot;algunos-tips&quot;&gt;Algunos tips&lt;/h2&gt;
+&lt;h3 id=&quot;manipular-la-variable-path-en-fish-shell&quot;&gt;Manipular la variable PATH en fish-shell&lt;/h3&gt;
+&lt;p&gt;Si os habéis despitado y no os acordáis de que hemos cambiado y mejorado nuestra terminal, es posible que al añadir alguna variable al &lt;code class=&quot;highlighter-rouge&quot;&gt;PATH&lt;/code&gt;&lt;sup id=&quot;fnref:1&quot;&gt;&lt;a href=&quot;#fn:1&quot; class=&quot;footnote&quot;&gt;1&lt;/a&gt;&lt;/sup&gt; lo hagáis en &lt;code class=&quot;highlighter-rouge&quot;&gt;.bashrc&lt;/code&gt;. Y si seguís sin acordaros de esto os preguntaréis que diablos pasa.&lt;/p&gt;
+
+&lt;p&gt;Al cambiar a fish, el &lt;code class=&quot;highlighter-rouge&quot;&gt;PATH&lt;/code&gt; lo debéis editar en &lt;code class=&quot;highlighter-rouge&quot;&gt;~config/fish/config.fish&lt;/code&gt; (creadlo si no lo tenéis).
+Con ello tenemos dos opciones para añadir un path:&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;Temporal:&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ set -gx PATH $PATH tu/path/aqui
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;-g&lt;/code&gt; y &lt;code class=&quot;highlighter-rouge&quot;&gt;-x&lt;/code&gt; significan &lt;strong&gt;global&lt;/strong&gt; y &lt;strong&gt;exportar&lt;/strong&gt;.
+-Permanente:&lt;/p&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ touch ~/.config/fish/config.fish
+$ echo &quot;set -gx PATH \$PATH &amp;lt;path&amp;gt;&quot; &amp;gt;&amp;gt; ~/.config/fish/config.fish
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;El primer comando es para asegurarnos de tener el archivo de configuración (puedes no tenerlo!).&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://coderwall.com/p/hicrzq/manipulating-path-variable-in-fish-shell&quot;&gt;Fuente&lt;/a&gt; donde encontré la respuesta.&lt;/p&gt;
+
+&lt;div class=&quot;footnotes&quot;&gt;
+  &lt;ol&gt;
+    &lt;li id=&quot;fn:1&quot;&gt;
+      &lt;p&gt;Añadir algo al path se utiliza para usar nombres cortos en la shell en lugar que tener que poner toda la direccion hasta el ejecutable cada vez que queremos ejecutarlo. &lt;a href=&quot;#fnref:1&quot; class=&quot;reversefootnote&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+    &lt;/li&gt;
+  &lt;/ol&gt;
+&lt;/div&gt;</content><author><name>bart</name></author><category term="blog" /><category term="informática" /><category term="shell" /><category term="bash" /><summary type="html">Fish-shell</summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="http://localhost:4000/assets/images/fish-shell.png" /></entry><entry><title type="html">Exposición de mi trabajo fin de máster</title><link href="http://localhost:4000/tfm/" rel="alternate" type="text/html" title="Exposición de mi trabajo fin de máster" /><published>2018-09-14T22:44:00+02:00</published><updated>2018-09-14T22:44:00+02:00</updated><id>http://localhost:4000/tfm</id><content type="html" xml:base="http://localhost:4000/tfm/">&lt;h2 id=&quot;trabajo-fin-de-máster-checked&quot;&gt;Trabajo fin de Máster: checked&lt;/h2&gt;
+
+&lt;p&gt;Tras unos meses de esfuerzo hoy por fin he expuesto mi trabajo fin de máster.
+Era el último escollo restante para conseguir el master de Física y Matemáticas en el que 
+llevaba involucrado todo el año.&lt;/p&gt;
+
+&lt;p&gt;El trabajo está liberado y lo podéis consultar en mi &lt;a href=&quot;https://github.com/thebooort/shh-signal-model&quot;&gt;github&lt;/a&gt; 
+y jugar con él todo lo que queráis.&lt;/p&gt;
+
+&lt;p&gt;Eso sí, esperad algunos cambios que me han sugerido en la presentación.&lt;/p&gt;
+
+&lt;p&gt;Además ese mismo día supimos la nota y me llevo debajo del brazo un sobresaliente :).&lt;/p&gt;</content><author><name>bart</name></author><category term="blog" /><category term="academia" /><category term="master" /><category term="matemáticas" /><category term="física" /><summary type="html">Trabajo fin de Máster: checked</summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="http://localhost:4000/assets/images/tfm.jpg" /></entry><entry><title type="html">Manifiesto de la red DIMA.</title><link href="http://localhost:4000/Manifiesto-Dima/" rel="alternate" type="text/html" title="Manifiesto de la red DIMA." /><published>2018-06-04T13:44:00+02:00</published><updated>2018-06-04T13:44:00+02:00</updated><id>http://localhost:4000/Manifiesto-Dima</id><content type="html" xml:base="http://localhost:4000/Manifiesto-Dima/">&lt;h1 id=&quot;manifiesto-de-la-red-dima&quot;&gt;Manifiesto de la red DIMA&lt;/h1&gt;
+
+&lt;p&gt;&lt;em&gt;“La divulgación de las matemáticas es una necesidad y una demanda social que debe ser fomentada y reconocida, no solo por el conjunto de las personas de nuestro país interesadas en el tema, sino además por las instituciones públicas, los medios de comunicación y la sociedad en general…”&lt;/em&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;qué-es-la-red-dima&quot;&gt;¿Qué es la red DIMA?&lt;/h2&gt;
+
+&lt;p&gt;La red DIMA es una red a nivel nacional de Divulgación Matemática. Este proyecto se puso en marcha vía el primer encuentro nacional de divulgadores de matemáticas que se llevó a cabo los días 10 y 11 de mayo de 2018, en Zaragoza (aunque como bien se señala &lt;a href=&quot;http://www.abc.es/ciencia/abci-manifiesto-reconocimiento-divulgacion-matematicas-201806041041_noticia.html#&quot;&gt;aquí&lt;/a&gt;, el proyecto tiene sus raíces en un evento previo realizado en el &lt;a href=&quot;https://www.icmat.es/&quot;&gt;ICMAT&lt;/a&gt; en 2017).&lt;/p&gt;
+
+&lt;p&gt;El colectivo surgido tiene como objetivo tejer una red que permita desarrollar actividades formativas en torno a la divulgación de las matemáticas e incorporar a las nuevas generaciones en este esfuerzo.
+Los  objetivos  específicos abarcan:&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;Establecer sinergías entre lxs divulgadorxs.&lt;/li&gt;
+  &lt;li&gt;Desarrollar actividades formativas.&lt;/li&gt;
+  &lt;li&gt;Incentivar la incorporación de jóvenes.&lt;/li&gt;
+  &lt;li&gt;Poner de manifiesto ante organismos públicos la consideración que debe tener la divulgación tanto en currículos como en convocatorias públicas.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;manifiesto&quot;&gt;Manifiesto&lt;/h2&gt;
+
+&lt;p&gt;Una de las primeras acciones llevadas a cabo por este grupo ha sido la elaboración de un manifiesto por la divulgación matemática, el cual ha sido publicado a fecha de 4 de Junio de 2018 y que os dejo a continuación:&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://raw.githubusercontent.com/thebooort/thebooort.github.io/master/assets/Manifiesto-DEF.pdf&quot;&gt;Pdf del manifiesto&lt;/a&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;cómo-colaborar&quot;&gt;¿Cómo colaborar?&lt;/h2&gt;
+
+&lt;p&gt;Actualmente la red la componemos estudiantes/profesores/divulgadores de muchas zonas de España.
+El grupo se gestiona mediante google groups, y se anima bastante a unirse a las nuevas generaciones de divulgadores que vienen.&lt;/p&gt;
+
+&lt;p&gt;Si tenéis interés podéis contactar conmigo por aquí o telegram y os informo de cómo ser parte de la red.&lt;/p&gt;
+
+&lt;p&gt;Por supuesto, siempre podéis ayudarnos dando publicidad y difudiendo estas y otras iniciativas de divulgación.&lt;/p&gt;</content><author><name>bart</name></author><category term="blog" /><category term="Mathematics" /><category term="Divulgacion" /><category term="Popular Science" /><summary type="html">Manifiesto de la red DIMA</summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="http://localhost:4000/assets/images/dima.jpg" /></entry><entry><title type="html">[Member] Interferencias</title><link href="http://localhost:4000/Interferencias/" rel="alternate" type="text/html" title="[Member] Interferencias " /><published>2018-06-02T22:10:00+02:00</published><updated>2018-06-02T22:10:00+02:00</updated><id>http://localhost:4000/Interferencias</id><content type="html" xml:base="http://localhost:4000/Interferencias/">&lt;h1 id=&quot;interferencias&quot;&gt;Interferencias&lt;/h1&gt;
+&lt;p&gt;&lt;img src=&quot;https://raw.githubusercontent.com/thebooort/thebooort.github.io/master/assets/images/banner_interferencias.png&quot; alt=&quot;logo&quot; /&gt;&lt;/p&gt;
+
+&lt;h5 id=&quot;english-version-below&quot;&gt;English Version below!&lt;/h5&gt;
+&lt;p&gt;Interferencias es un grupo ciberactivista sin ánimo de lucro que pretende reunir a una serie de personas interesadas en:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;Derechos digitales
+Privacidad en Internet
+Vigilancia masiva
+Seguridad informática
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;La idea es compartir información sobre estos temas, al igual que hacer mesas redondas para conocer las opiniones del resto de personas y participar activamente en la defensa de los derechos en internet y la privacidad.&lt;/p&gt;
+
+&lt;p&gt;Este grupo se basa en los ideales de la EFF sobre la importancia de que estos temas sean de conocimiento público y cercano para todas las personas, así como que se luche tanto desde las instituciones como desde las comunidades educativas, como hacen con Electronic Frontier Alliance para el activismo estudiantil.&lt;/p&gt;
+
+&lt;p&gt;Si necesitas más información o quieres comentarnos cualquier cuestión, puedes escribirnos por correo electrónico a info@interferencias.tech o interferencias@protonmail.com.&lt;/p&gt;
+
+&lt;p&gt;También puedes unirte a nuestro grupo de Telegram, que es el medio de comunicación más directo que usamos: &lt;a href=&quot;https://t.me/inter_ferencias&quot;&gt;inter_ferencias&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;Y no te olvides de visitar nuestra web! : &lt;a href=&quot;http://interferencias.tech&quot;&gt;interferencias.tech&lt;/a&gt;&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;p&gt;Interferencias is a non-profit cyber-activist group that aims to bring together a number of people interested in:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;Digital rights
+Internet privacy
+Massive surveillance
+Computer security
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;The idea is to share information on these issues, as well as round tables to know the opinions of other people and actively participate in the defense of rights on the Internet and privacy in the network.&lt;/p&gt;
+
+&lt;p&gt;This group is based on the ideals of the EFF on the importance of these issues being public knowledge and close to all people, as well as fighting from the institutions as from the educational communities, as they do with Electronic Frontier Alliance for student activism.&lt;/p&gt;
+
+&lt;p&gt;If you need more information or want to tell us any question, you can write us by email to info@interferencias.tech or interferencias@protonmail.com.&lt;/p&gt;
+
+&lt;p&gt;You can also join our Telegram group, which is the most direct means of communication we use: &lt;a href=&quot;https://t.me/inter_ferencias&quot;&gt;inter_ferencias&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;And don’t forget visit our website:  &lt;a href=&quot;http://interferencias.tech&quot;&gt;interferencias.tech&lt;/a&gt;&lt;/p&gt;</content><author><name>bart</name></author><category term="project" /><category term="Interferencias" /><category term="hacking" /><category term="Digital rights" /><category term="Internet privacy" /><category term="Massive surveillance" /><category term="Computer security" /><category term="Hackitivism" /><summary type="html">Interferencias</summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="https://raw.githubusercontent.com/thebooort/thebooort.github.io/master/assets/images/interferencias_logo.jpg" /></entry><entry><title type="html">[Former President] Asociacion de Estudiantes de Matematicas</title><link href="http://localhost:4000/Asociacion-de-Estudiantes-de-Matematicas/" rel="alternate" type="text/html" title="[Former President] Asociacion de Estudiantes de Matematicas " /><published>2018-06-02T22:10:00+02:00</published><updated>2018-06-02T22:10:00+02:00</updated><id>http://localhost:4000/Asociacion%20de%20Estudiantes%20de%20Matematicas</id><content type="html" xml:base="http://localhost:4000/Asociacion-de-Estudiantes-de-Matematicas/">&lt;h1 id=&quot;asociacion-de-estudiantes-de-matematicas-de-la-universidad-de-granada&quot;&gt;Asociacion de Estudiantes de Matematicas de la Universidad de Granada&lt;/h1&gt;
+&lt;p&gt;&lt;img src=&quot;https://raw.githubusercontent.com/thebooort/thebooort.github.io/master/assets/images/banner_amat.jpeg&quot; alt=&quot;logo&quot; /&gt;&lt;/p&gt;
+
+&lt;h5 id=&quot;english-version-below&quot;&gt;English Version below!&lt;/h5&gt;
+&lt;p&gt;Durante la carrera de matemáticas fui miembro durante tres años de la Asociación de Estudiantes de Matemáticas de la Universidad de Granada, uno como vicepresidente y dos como Presidente.&lt;/p&gt;
+
+&lt;p&gt;Durante todos eso años tuve la oportunidad de conocer a gente fantástica y organizar y participar en muchas actividades de divulgacion y educacion matemática. Desde seminarios a mis compañeros sobre temas singulares dentro de las matemáticas, hasta charlas de divulgación para el público general (y no solo eso, organizar una asociación como esta tambien implica ser capaz de organizar equipos, llevar papeleo al día, y hasta me tocó diseñar el logo!)&lt;/p&gt;
+
+&lt;p&gt;De hecho durante mi ultimo año llegamos a colaborar con las Real Sociedad Española de Matemáticas, firmando un gran convenio que nos llena de orgullo:&lt;a href=&quot;https://twitter.com/RealSocMatEsp/status/859680768800456704&quot;&gt;link tuit de la firma con más info&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;Por supuesto todo esto no hubiera sido posible sin la ayuda de la junta directiva de aquel entonces, que me facilitaban muchisimo el trabajo y nos ayudabamos siempre entre nosotros. Todos ellos son amigos, pero me permito destacar a Jesus Bueno y Miguel Lopez, con los cuales aun hoy sigo colaborando en otras batallas.&lt;/p&gt;
+
+&lt;p&gt;Siempre me ha encantado comunicar ciencia pero este fue el empujon que me faltaba para acercarme de lleno a este mundo. Desde entonces, no he parado de contarle al mundo lo geniales y maravillosas que son las matemáticas.&lt;/p&gt;
+
+&lt;p&gt;Aún hoy sigo colaborando con ellos todo lo que puedo/me permiten mis otras obligaciones. Cuando se trata de divulgar, ¡me apunto a bombardeo!&lt;/p&gt;
+
+&lt;p&gt;Seguidlos y estad informados!&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;http://amat.ugr.es&quot;&gt;Página web&lt;/a&gt;(Un poco desactualizada)&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;http://www.twitter.com/AMATugr&quot;&gt;Twitter&lt;/a&gt;&lt;/p&gt;
+
+&lt;hr /&gt;
+&lt;p&gt;During the maths degree I was a member for three years at the Mathematics Students Association of the University of Granada, one as vicepresident, two as President.&lt;/p&gt;
+
+&lt;p&gt;During all those years I had the opportunity to meet fantastic people and organize and participate in many activities of dissemination and mathematical education. From seminars to my colleagues on singular topics in mathematics, to lectures to the general public (and not only that, organizing an association like this one also means being able to organize teams, keep paperwork up to date, and I even had to design the logo!)&lt;/p&gt;
+
+&lt;p&gt;In fact during my last year we got to collaborate with the Spanish Royal Society of Mathematics, signing a great agreement that fills us with pride: [tweet of the day with more info] (https://twitter.com/RealSocMatEsp/status/ 859680768800456704)&lt;/p&gt;
+
+&lt;p&gt;Of course, all of this would not have been possible without the help of the board of directors at the time, which made my work much easier and helped us always. All of them are friends, but I would like to highlight Jesus Bueno and Miguel Lopez, with whom I still collaborate in other battles.&lt;/p&gt;
+
+&lt;p&gt;I have always loved communicating science but this was the push that I needed to get close to this world. Since then, I have not stopped telling the world how great and wonderful mathematics is.&lt;/p&gt;
+
+&lt;p&gt;Even today I continue to collaborate with them as much as I can / allow my other obligations. When it comes to disclosing, I’m going to bomb!&lt;/p&gt;
+
+&lt;p&gt;Follow them and be informed!&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;http://amat.ugr.es&quot;&gt;Webpage&lt;/a&gt;(Un poco desactualizada)&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;http://www.twitter.com/AMATugr&quot;&gt;Twitter&lt;/a&gt;&lt;/p&gt;</content><author><name>bart</name></author><category term="project" /><category term="Mathematics" /><category term="University" /><category term="Education" /><category term="Science Divulgation" /><summary type="html">Asociacion de Estudiantes de Matematicas de la Universidad de Granada</summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="https://raw.githubusercontent.com/thebooort/thebooort.github.io/master/assets/images/logo_amat.jpg" /></entry><entry><title type="html">[Founder] The Open Bacteria Project</title><link href="http://localhost:4000/The-Open-Bacteria-Project/" rel="alternate" type="text/html" title="[Founder] The Open Bacteria Project " /><published>2018-04-02T22:10:00+02:00</published><updated>2018-04-02T22:10:00+02:00</updated><id>http://localhost:4000/The%20Open%20Bacteria%20Project</id><content type="html" xml:base="http://localhost:4000/The-Open-Bacteria-Project/">&lt;h1 id=&quot;the-open-bacteria-project&quot;&gt;The Open Bacteria Project&lt;/h1&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://raw.githubusercontent.com/thebooort/thebooort.github.io/master/assets/images/bacteria_banner.png&quot; alt=&quot;logo&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;This project was created to participate in the national interdisciplinary universitary competition &lt;a href=&quot;http://impaciencia.org&quot;&gt;IMPACIENCIA&lt;/a&gt;.
+The final was celebrated in Málaga the 28th of April (2018)… AND WE WON!&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://raw.githubusercontent.com/thebooort/thebooort.github.io/master/assets/images/premio.jpeg&quot; alt=&quot;premio&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Keep reading to know a little more about the project we want to develop (this didn’t end with the competition!).&lt;/p&gt;
+
+&lt;p&gt;We are a group of students that are trying to create a global repository about bacteria, but with different science perspectives in order not only to fully understand their nature but also to allow everyone to have a full suite about what tool can help us to do so.&lt;/p&gt;
+
+&lt;p&gt;On the mathematical side, we have develop diferent functions that can emulate and predict bacteria growth and some properties.&lt;/p&gt;
+
+&lt;p&gt;On the biological one we have develop full documentation about how to replicate bacteria experiments, information to understand them and biliography to go deeper in the subject.&lt;/p&gt;
+
+&lt;p&gt;Furthermore we have develop some functions that allow us to recognise different bacteria colonies from photos that will allow us (and every people) to create live simulations from photos in the future.&lt;/p&gt;
+
+&lt;p&gt;Finally we have develop a web app that allow every one to take a brief look in our work and try their own experiments.&lt;/p&gt;
+
+&lt;p&gt;In the future we expect to develop this web app and transform it in the first social network to share bacteria experiments around the world between scientist, students, teaches and everyday people. This may be a powerfull tool that may lead to facilitate the biologists work in microbiology (even discover some home-experiments about antibiotics that could discover new ones)&lt;/p&gt;
+
+&lt;p&gt;Does it sound exiciting to you? Well, great news: You can follow our science adventures:&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;http://theopenbacteriaproject.github.io&quot;&gt;Webpage&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;http://github.com/TheOpenBacteriaProject&quot;&gt;Github&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;www.twitter.com/theopenbacteria&quot;&gt;Twitter&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://www.youtube.com/channel/UCOSsUPPxOC6FuWf6oz0YgLg&quot;&gt;Youtube&lt;/a&gt;&lt;/p&gt;</content><author><name>bart</name></author><category term="project" /><category term="bioinformatics" /><category term="mathematics" /><category term="OpenSource" /><category term="biology" /><category term="university" /><summary type="html">The Open Bacteria Project</summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="https://raw.githubusercontent.com/thebooort/thebooort.github.io/master/assets/images/logo_bacteria.png" /></entry><entry><title type="html">[Founder] BioinformaticsGRX</title><link href="http://localhost:4000/BioinformaticsGRX/" rel="alternate" type="text/html" title="[Founder] BioinformaticsGRX " /><published>2018-04-02T22:10:00+02:00</published><updated>2018-04-02T22:10:00+02:00</updated><id>http://localhost:4000/BioinformaticsGRX</id><content type="html" xml:base="http://localhost:4000/BioinformaticsGRX/">&lt;h1 id=&quot;bioinformaticsgrx&quot;&gt;BioinformaticsGRX&lt;/h1&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://raw.githubusercontent.com/thebooort/thebooort.github.io/master/assets/images/bioinf_banner.png&quot; alt=&quot;logo&quot; /&gt;&lt;/p&gt;
+
+&lt;h5 id=&quot;english-version-below&quot;&gt;English Version below!&lt;/h5&gt;
+
+&lt;p&gt;BioinformaticsGRX es un grupo de bioinformática de Granada. Hacemos cursos, damos charlas avanzadas y para principiantes e intentamos crear sinergias en nuestra ciudad entre estudiantes, profesores, investigadores y empresas (tenemos planes para hacer algunos proyectos de software pronto tambien).
+Actualmente estamos en twitter, slack y telegram (nuestro github está en construcción y estará listo en nada). Si tienes curiosidad acerca de la bioinformática o si eres un investigador que desea conocer a otras personas en su campo, BioinformaticsGRX es el grupo adecuado para ti. ¡ÚNETE A NOSOTROS!&lt;/p&gt;
+
+&lt;p&gt;Para muchas de las actividades que organizamos usamos Meetup para reservar asientos (normalemente nuestro aforo es limitado). Nos podéis encontrar en:&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;http://bioinformaticsgrx.com&quot;&gt;Página web&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://www.meetup.com/Granada-Geek/?chapter_analytics_code=UA-60118289-2&quot;&gt;Meetup&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;http://www.twitter.com/bioinfGRX&quot;&gt;Twitter&lt;/a&gt;&lt;/p&gt;
+
+&lt;hr /&gt;
+&lt;p&gt;BioinformaticsGRX it’s a bioinformatics group of Granada. We make courses, give advanced and beginner talks and try to create sinergies in our city between students, professors, researchers and enterprises  (we have some plans to make some software projects soon too) .&lt;/p&gt;
+
+&lt;p&gt;We are in twitter, slack and telegram (our github is under construction). If you feel curious about bioinformatics or you are a scientist that want to know other people in your field, BioinformaticsGRX it’s the right group for you.&lt;/p&gt;
+
+&lt;p&gt;Find us here!:&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;bioinformaticsgrx.com&quot;&gt;Webpage&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://www.meetup.com/Granada-Geek/?chapter_analytics_code=UA-60118289-2&quot;&gt;Meetup&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;www.twitter.com/bioinfGRX&quot;&gt;Twitter&lt;/a&gt;&lt;/p&gt;</content><author><name>bart</name></author><category term="project" /><category term="bioinformatics" /><category term="BioinformaticsGRX" /><category term="OpenSource" /><summary type="html">BioinformaticsGRX</summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="https://raw.githubusercontent.com/thebooort/thebooort.github.io/master/assets/images/Captura%20de%20pantalla%20de%202018-04-02%2012-23-06.png" /></entry><entry><title type="html">[Creator]Realidad Diferencial Telegram channel</title><link href="http://localhost:4000/RealidadDiferencial-telegram/" rel="alternate" type="text/html" title="[Creator]Realidad Diferencial Telegram channel " /><published>2018-03-31T22:10:00+02:00</published><updated>2018-03-31T22:10:00+02:00</updated><id>http://localhost:4000/RealidadDiferencial-telegram</id><content type="html" xml:base="http://localhost:4000/RealidadDiferencial-telegram/">&lt;h1 id=&quot;realidad-diferenicial-telegram-science-channel&quot;&gt;Realidad Diferenicial: Telegram Science Channel&lt;/h1&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://raw.githubusercontent.com/thebooort/thebooort.github.io/master/assets/images/telegram1.png&quot; alt=&quot;captura&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Leo. Leo mucho. Y sobre todo leo muchas cosas sobre matemáticas, escepticismo y ciencia. Vaya, no os debería descubrir nada nuevo si veis el blog :smile:&lt;/p&gt;
+
+&lt;p&gt;Por todo eso que ya sabéis, me gusta estar informado sobre todos esos campos que me gustan, saber que está pasando, cuales son los utlimos avanaces, etcetera.&lt;/p&gt;
+
+&lt;p&gt;Y otro de mis grandes vicios es contarle a la gente mas cercana a mí sobre las cosas que he leido. Hablo mucho de ciencia y suelo pasar muchos articulos cuando sé cuales son los intereses de cada uno.&lt;/p&gt;
+
+&lt;p&gt;Con toda esta sed de conocimiento en una persona con tan poco tiempo libre como yo, acabó pasando lo esperable: hice un pequeño canal de telegram para ir almacenando las cosas que no me daba tiempo a leer, las noticias que me habían gustado o aquellas a las que tenía que darle una segunda lectura. Sé que puede no ser la plataforma ideal, pero como lo que tengo más a mano para estos temas en mi smartphone ¿porqué no? (que tenga cliente para PC también ayuda XD )&lt;/p&gt;
+
+&lt;p&gt;Fue entonces cuando se lo comenté a algunas personas, y la idea les gustó: Un canal en telegram con una noticia diaria relevante del mundo cientifico (algunos dias menos, algunos dias más) ((bastantes dias más ROTFLOL)).&lt;/p&gt;
+
+&lt;p&gt;Es cierto que hasta ahora lo he mantenido bastante en &lt;em&gt;“secreto”&lt;/em&gt; pero ya que tengo esta plataforma, si te interesa de lo que hablo aquí, el canal está genial. Además cuando publique cualquier cosa aquí tendréis un enlace en el canal, es un win/win. 
+Para evitar mucho lío, por ahora publicaré sólo yo, pero igual en un futuro si somos muchos, añado a más gente. ¿Que me falta? Ostras, el link:
+&lt;a href=&quot;https://t.me/realidaddiferencial&quot;&gt;RealidadDiferencial&lt;/a&gt;&lt;/p&gt;</content><author><name>bart</name></author><category term="project" /><category term="telegram" /><category term="science" /><category term="ciencia" /><category term="escepticismo" /><summary type="html">Realidad Diferenicial: Telegram Science Channel</summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="https://raw.githubusercontent.com/thebooort/thebooort.github.io/master/assets/images/telegram3.png" /></entry></feed>
